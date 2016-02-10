@@ -4,37 +4,37 @@ class FrameBuffer {
 public:
 
 	FrameBuffer() {
-	fbfd = open("/dev/fb0", O_RDWR);
-    if (fbfd == -1) {
-        perror("Error: cannot open framebuffer device");
-        exit(1);
-    }
-    printf("The framebuffer device was opened successfully.\n");
+		fbfd = open("/dev/fb0", O_RDWR);
+	    if (fbfd == -1) {
+	        perror("Error: cannot open framebuffer device");
+	        exit(1);
+	    }
+	    printf("The framebuffer device was opened successfully.\n");
 
-    // Get fixed screen information
-    if (ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo) == -1) {
-        perror("Error reading fixed information");
-        exit(2);
-    }
+	    // Get fixed screen information
+	    if (ioctl(fbfd, FBIOGET_FSCREENINFO, &finfo) == -1) {
+	        perror("Error reading fixed information");
+	        exit(2);
+	    }
 
-    // Get variable screen information
-    if (ioctl(fbfd, FBIOGET_VSCREENINFO, &vinfo) == -1) {
-        perror("Error reading variable information");
-        exit(3);
-    }
+	    // Get variable screen information
+	    if (ioctl(fbfd, FBIOGET_VSCREENINFO, &vinfo) == -1) {
+	        perror("Error reading variable information");
+	        exit(3);
+	    }
 
-    printf("%dx%d, %dbpp\n", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel);
+	    printf("%dx%d, %dbpp\n", vinfo.xres, vinfo.yres, vinfo.bits_per_pixel);
 
-    // Figure out the size of the screen in bytes
-    int screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
+	    // Figure out the size of the screen in bytes
+	    int screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
 
-    // Map the device to memory
-    fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0);
-    if (atoi (fbp) == -1) {
-        perror("Error: failed to map framebuffer device to memory");
-        exit(4);
-    }
-    printf("The framebuffer device was mapped to memory successfully.\n");
+	    // Map the device to memory
+	    fbp = (char *)mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd, 0);
+	    if (atoi (fbp) == -1) {
+	        perror("Error: failed to map framebuffer device to memory");
+	        exit(4);
+	    }
+	    printf("The framebuffer device was mapped to memory successfully.\n");
 	}
 
 	~FrameBuffer() {
@@ -90,6 +90,30 @@ public:
 		}
 		drawLine(P.e[P.n-1], P.e[0], r, g, b, a);
 	}
+
+	void drawCircle(Point mid, int radius, int r, int g, int b, int a) {
+		int x = radius;
+		int y = 0;
+		int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
+		while( y <= x ) {
+			putPixel(Point(x+mid.x,y+mid.y),r,g,b,a);
+			putPixel(Point(y+mid.x,x+mid.y),r,g,b,a);
+			putPixel(Point(-x+mid.x,y+mid.y),r,g,b,a);
+			putPixel(Point(-y+mid.x,x+mid.y),r,g,b,a);
+			putPixel(Point(-x+mid.x,-y+mid.y),r,g,b,a);
+			putPixel(Point(-y+mid.x,-x+mid.y),r,g,b,a);
+			putPixel(Point(x+mid.x,-y+mid.y),r,g,b,a);
+			putPixel(Point(y+mid.x,-x+mid.y),r,g,b,a);
+    		y++;
+    		if (decisionOver2<=0) {
+    			decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
+    		}
+    		else {
+    			x--;
+    			decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
+    		}
+    	}
+    }
 
 	int getB(int x, int y){
 		int blue;
