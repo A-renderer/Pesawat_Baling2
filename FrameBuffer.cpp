@@ -1,4 +1,5 @@
 #include "Polygon.h"
+#include "Line.h"
 
 class FrameBuffer {
 public:
@@ -167,6 +168,57 @@ public:
 	            *(fbp + location + 3) = 0;      // transparency
 	        }
 	    }
+	}
+
+	void rasterScan(Polygon pol, int r, int g, int b, int a) {
+		drawPolygon(pol, r, g, b, a);
+
+		int n = pol.n;
+
+		float slope[n];
+		int line[n];
+		int x,y;
+		for (int i=0; i<n; i++) {
+			int dx = pol.e[i+1].x - pol.e[i].x;
+			int dy = pol.e[i+1].y - pol.e[i].y;
+
+			if (dy == 0) {
+				slope[i] = 1;
+			}
+			if (dx == 0) {
+				slope[i] = 0;
+			}
+			if (dx != 0 && dy != 0) {
+				slope[i] = (float) dx/dy;
+			}
+		}
+
+		vector<Line> lines;
+		for (int y=0; y<600; y++) { //600 itu batas pixel paling bawah, masi ngasal wkwkwk
+			int k = 0;
+			// Cari titik perpotongan
+			/*for (int i=0; i<n; i++) {
+				if (pol.e[i].y <= y && pol.e[i+1].y > y || pol.e[i+1].y <= y && pol.e[i].y > y) {
+					line[k] = (int) (pol.e[i].x + slope[i] * (y - pol.e[i].y));
+					k++;
+				}
+			}*/
+
+			//ngurutin line
+			for (int j=0; j<k-1; j++) {
+				for (int i=0; i<k-1; i++) {
+					if (line[i] > line[i+1]) {
+						int temp = line[i];
+						line[i] = line[i+1];
+						line[i+1] = temp;
+					}
+				}
+			}
+
+			for (int i=0; i<k; i+=2) {
+				drawLine(Point(line[i], y), Point(line[i+1], y), r, g, b, a);
+			}
+		}
 	}
 
 private:
