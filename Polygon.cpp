@@ -81,24 +81,48 @@ float Polygon::getMinY() {
 	return minY;
 }
 
-float Polygon::getMidY() {
-	int i=1;
-	float maxY=getMaxY();
-
-	i=1;
-	float minY=getMinY();
-
-	return (maxY + minY)/2;
-}
-
 float Polygon::getMidX() {
 	int i=1;
-	float maxX=getMaxY();
+	float maxX=e[0].x;
+	while(i<n) {
+		if(e[i].x>maxX) {
+			maxX=e[i].x;
+		}
+		i++;
+	}
 
 	i=1;
-	float minX=getMinX();
+	float minX=e[0].x;
+	while(i<n) {
+		if(e[i].x<minX) {
+			minX=e[i].x;
+		}
+		i++;
+	}
 
 	return (maxX + minX)/2;
+}
+
+float Polygon::getMidY() {
+	int i=1;
+	float maxY=e[0].y;
+	while(i<n) {
+		if(e[i].y>maxY) {
+			maxY=e[i].y;
+		}
+		i++;
+	}
+
+	i=1;
+	float minY=e[0].y;
+	while(i<n) {
+		if(e[i].y<minY) {
+			minY=e[i].y;
+		}
+		i++;
+	}
+
+	return (maxY + minY)/2;
 }
 
 void Polygon::moveRight(float dx) {
@@ -145,6 +169,33 @@ void Polygon::rotate(double deg) {
 	while(i < n) {
 		tempx= ((cos(deg*cons)*(e[i].x - e[0].x)) - (sin(deg*cons)*(e[i].y - e[0].y)) + e[0].x)+0.5;
 		tempy= ((sin(deg*cons)*(e[i].x - e[0].x)) + (cos(deg*cons)*(e[i].y - e[0].y)) + e[0].y)+0.5;
+		e[i].x = tempx;
+		e[i].y = tempy;
+		i++;
+	}
+}
+
+void Polygon::rotateCenter(double deg) {
+	int i=0;
+	double cons=0.0174532925; double tempx,tempy;
+
+	float centerX=getMidX(), centerY=getMidY();
+	printf("%f\n", centerX); printf("%f\n", centerY);
+
+	//TRANSLATE TO ORIGIN
+	//double x1 = p1.getX() - center.x;
+	//double y1 = p1.getY() - center.y;
+
+	//APPLY ROTATION
+	//double temp_x1 = x1 * Math.cos(angle) - y1 * Math.sin(angle));
+	//double temp_y1 = x1 * Math.sin(angle) + y1 * Math.cos(angle));
+
+	//TRANSLATE BACK
+	//p1.setLocation(temp_x1 + center.x, temp_y1 + center.y);
+
+	while(i < n) {
+		tempx= ((cos(deg*cons)*(e[i].x - centerX)) - (sin(deg*cons)*(e[i].y - centerY)) + centerX) + 0.5;
+		tempy= ((sin(deg*cons)*(e[i].x - centerX)) + (cos(deg*cons)*(e[i].y - centerY)) + centerY) + 0.5;
 		e[i].x = tempx;
 		e[i].y = tempy;
 		i++;
