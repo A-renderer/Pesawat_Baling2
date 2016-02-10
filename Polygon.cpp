@@ -4,6 +4,15 @@ Polygon::Polygon() {
 	n = 0;
 }
 
+Polygon::Polygon(string str) {
+	if (str.compare("kapal")==0) {
+		e.push_back(Point (20,70));
+		e.push_back(Point (50,70));
+		e.push_back(Point (50,140));
+		e.push_back(Point (20,140));
+	}
+}
+
 Polygon::Polygon(vector<Point> P) {
 	n = P.size();
 	e = P;
@@ -125,6 +134,19 @@ void Polygon::moveDown(float dy) {
 	while(i<n)
 	{
 		e[i].y+=dy;
+		i++;
+	}
+}
+
+void Polygon::rotate(double deg) {
+	int i=0;
+	double cons=0.0174532925; double tempx,tempy;
+
+	while(i < n) {
+		tempx= ((cos(deg*cons)*(e[i].x - e[0].x)) - (sin(deg*cons)*(e[i].y - e[0].y)) + e[0].x)+0.5;
+		tempy= ((sin(deg*cons)*(e[i].x - e[0].x)) + (cos(deg*cons)*(e[i].y - e[0].y)) + e[0].y)+0.5;
+		e[i].x = tempx;
+		e[i].y = tempy;
 		i++;
 	}
 }

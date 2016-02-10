@@ -8,6 +8,8 @@
 class Polygon {
 public:
 	Polygon();
+	
+	Polygon(string str);
 
 	Polygon(vector<Point> P);
 
@@ -34,6 +36,8 @@ public:
 	void moveUp(float dy);
 
 	void moveDown(float dy);
+	
+	void rotate(double dg);
 
 	int n; //jumlah titik
 	vector<Point> e; //titik2 poligon

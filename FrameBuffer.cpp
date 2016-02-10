@@ -88,6 +88,7 @@ public:
 		for (int i=0; i<P.n-1; ++i) {
 			drawLine(P.e[i], P.e[i+1], r, g, b, a);
 		}
+		drawLine(P.e[P.n-1], P.e[0], r, g, b, a);
 	}
 
 	int getB(int x, int y){
