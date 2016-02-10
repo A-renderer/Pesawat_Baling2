@@ -39,6 +39,8 @@ public:
 	
 	void rotate(double dg);
 
+	void rotateCenter(double dg);
+
 	int n; //jumlah titik
 	vector<Point> e; //titik2 poligon
 	Point firePoint;

@@ -19,8 +19,8 @@ int main() {
 	Polygon pol(P);
 
 	FB.drawPolygon(pol, 255,204,0,0);
-	pol.rotate(90);
+	pol.rotateCenter(90);
 	FB.drawPolygon(pol, 255,204,0,0);
-	pol.rotate(180);
-	FB.drawPolygon(pol, 255,204,0,0);
+	//pol.rotateCe(180);
+	//FB.drawPolygon(pol, 255,204,0,0);
 }
