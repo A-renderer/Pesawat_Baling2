@@ -127,7 +127,7 @@ float Polygon::getMidY() {
 
 void Polygon::moveRight(float dx) {
 	int i=0;
-	while(i<n)
+	while(i<e.size())
 	{
 		e[i].x+=dx;
 		i++;
@@ -136,7 +136,7 @@ void Polygon::moveRight(float dx) {
 
 void Polygon::moveLeft(float dx) {
 	int i=0;
-	while(i<n)
+	while(i<e.size())
 	{
 		e[i].x-=dx;
 		i++;
@@ -146,7 +146,7 @@ void Polygon::moveLeft(float dx) {
 
 void Polygon::moveUp(float dy) {
 	int i=0;
-	while(i<n)
+	while(i<e.size())
 	{
 		e[i].y-=dy;
 		i++;
@@ -155,7 +155,7 @@ void Polygon::moveUp(float dy) {
 
 void Polygon::moveDown(float dy) {
 	int i=0;
-	while(i<n)
+	while(i<e.size())
 	{
 		e[i].y+=dy;
 		i++;
@@ -180,7 +180,7 @@ void Polygon::rotateCenter(double deg) {
 	double cons=0.0174532925; double tempx,tempy;
 
 	float centerX=getMidX(), centerY=getMidY();
-	printf("%f\n", centerX); printf("%f\n", centerY);
+	//printf("%f\n", centerX); printf("%f\n", centerY);
 
 	//TRANSLATE TO ORIGIN
 	//double x1 = p1.getX() - center.x;
@@ -202,7 +202,7 @@ void Polygon::rotateCenter(double deg) {
 	}
 }
 
-void Polygon::scale(int size) {
+void Polygon::scale(float size) {
 	for (int i=0;i<e.size();i++) {
         e[i].x = e[i].x*size;
         e[i].y = e[i].y*size;

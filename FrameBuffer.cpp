@@ -230,7 +230,7 @@ public:
 			}
 
 			//ngurutin line
-			/*for (int j=0; j<k-1; j++) {
+			for (int j=0; j<k-1; j++) {
 				for (int i=0; i<k-1; i++) {
 					if (line[i] > line[i+1]) {
 						int temp = line[i];
@@ -238,18 +238,8 @@ public:
 						line[i+1] = temp;
 					}
 				}
-			}*/
-
-			//insertion sort
-			for (int i=1; i<k-1; i++) {
-				int j=i;	
-				while (j>0 && line[j] < line[j-1]) {
-					  int temp = line[j];
-					  line[j] = line[j-1];
-					  line[j-1] = temp;
-					  j--;
-				}
 			}
+
 
 			for (int i=0; i<k; i+=2) {
 				drawLine(Point(line[i], y), Point(line[i+1], y), r, g, b, a);
