@@ -19,12 +19,25 @@ int main() {
 	float size=1;
 	Polygon polyPlane = matrixToPolygon(plane,sizeof(plane)/sizeof(*plane),0,0);
 
-	while(size<10) {
+	int propeler1[][2]={{28,18},{23,18},{25,19},{27,19},{28,18},{27,17},{27,15},{28,13},{28,18},{29,17},{31,17},{33,18},{28,18},{29,19},{29,21},{28,23},{28,18}};
+
+	/*while(size<10) {
 		usleep(100000);
 		FB.clearscreen();		
 		printObject(polyPlane);
 		size+=0.05;
 		polyPlane.scale(size);
+	}*/
+
+	//FB.drawCircle(Point(400,200),50, 25,25,122,0);
+ 
+	Polygon prop = matrixToPolygon(propeler1,sizeof(propeler1)/sizeof(*propeler1),0,0);
+	prop.scale(5);
+	while (true) {
+		FB.rasterScan(prop,25,25,122,0);
+		//op.scale()
+		FB.clearscreen();
+		prop.rotateCenter(10);
 	}
 
 	/*
@@ -52,7 +65,7 @@ int main() {
 }
 
 void printObject(Polygon Poly) {
-	FB.drawPolygon(Poly.e,25,25,122,0);
+	//FB.drawPolygon(Poly.e56);
 	// Sky blue : 135 206 235
 	FB.rasterScan(Poly, 0, 0, 0, 0);
 }
