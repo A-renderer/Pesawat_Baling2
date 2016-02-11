@@ -193,7 +193,7 @@ void Polygon::rotateCenter(double deg) {
 	//TRANSLATE BACK
 	//p1.setLocation(temp_x1 + center.x, temp_y1 + center.y);
 
-	while(i < n) {
+	while(i < e.size) {
 		tempx= ((cos(deg*cons)*(e[i].x - centerX)) - (sin(deg*cons)*(e[i].y - centerY)) + centerX) + 0.5;
 		tempy= ((sin(deg*cons)*(e[i].x - centerX)) + (cos(deg*cons)*(e[i].y - centerY)) + centerY) + 0.5;
 		e[i].x = tempx;
