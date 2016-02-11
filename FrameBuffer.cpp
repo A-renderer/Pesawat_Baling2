@@ -186,15 +186,28 @@ public:
 	        for (y=0; y<512; y++){
 	            location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
 	                           (y+vinfo.yoffset) * finfo.line_length;
-	            *(fbp + location) = 235;        // blue
-	            *(fbp + location + 1) = 206;      // green
-	            *(fbp + location + 2) = 135;      // red
+	            *(fbp + location) = 255;        // blue
+	            *(fbp + location + 1) = 248;      // green
+	            *(fbp + location + 2) = 224;      // red
 	            *(fbp + location + 3) = 0;      // transparency
 	        }
 	    }
 	    // Sky blue : 135 206 235
 	}
 
+	void cleararea(int startX, int startY, int finishX, int finishY){
+	    int x,y;
+	    for (x=startX; x<finishX; x++){
+	        for (y=startY; y<finishY; y++){
+	            location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) +
+	                           (y+vinfo.yoffset) * finfo.line_length;
+	            *(fbp + location) = 255;        // blue
+	            *(fbp + location + 1) = 248;      // green
+	            *(fbp + location + 2) = 224;      // red
+	            *(fbp + location + 3) = 0;      // transparency
+	        }
+	    }
+	}
 	void rasterScan(Polygon pol, int r, int g, int b, int a) {
 		drawPolygon(pol, r, g, b, a);
 
