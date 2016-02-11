@@ -9,18 +9,23 @@ using namespace std;
 FrameBuffer FB;
 vector<Point> P;
 
-void printObject(int object[][2], int col, int size, int x, int y);
+void printObject(Polygon Poly);
+Polygon matrixToPolygon(int object[][2], int col, int x, int y);
 
 int main() {
 	int plane[][2] = {{1,13},{2,15},{41,18},{41,16},{42,15},{31,13},{43,14},
 		{47,14},{60,13},{48,15},{49,16},{49,18},{88,15},{89,13},
-		{88,16},{49,20},{47,21},{43,21},{41,20},{2,16},{45,20}}; // dimensi 90 x 23
-	
-	FB.clearscreen();
+		{88,16},{49,20},{47,21},{43,21},{41,20},{2,16}}; // dimensi 90 x 23
+	float size=1;
+	Polygon polyPlane = matrixToPolygon(plane,sizeof(plane)/sizeof(*plane),0,0);
 
-	printObject(plane,sizeof(plane)/sizeof(*plane),10,0,0);
-
-
+	while(size<10) {
+		usleep(100000);
+		FB.clearscreen();		
+		printObject(polyPlane);
+		size+=0.05;
+		polyPlane.scale(size);
+	}
 
 	/*
 	P.push_back(Point (90,140));
@@ -46,15 +51,17 @@ int main() {
 	//FB.drawPolygon(pol, 255,204,0,0);
 }
 
-void printObject(int object[][2], int col, int size, int x, int y) {
-	vector<Point> points;
-	points.clear();
-	for(int i=0;i<col-1;i++) {
-		points.push_back(Point(object[i][0]*size+size*x,object[i][1]*size+size*y));
-	}
-	Polygon Poly(points);
-	Poly.firePoint = Point(object[col-1][0]*size+size*x,object[col-1][1]*size+size*y);
+void printObject(Polygon Poly) {
 	FB.drawPolygon(Poly.e,25,25,122,0);
 	// Sky blue : 135 206 235
-	FB.floodFill(Poly.firePoint.x, Poly.firePoint.y, 135, 206, 235, 0, 0, 0);
+	FB.rasterScan(Poly, 0, 0, 0, 0);
+}
+
+Polygon matrixToPolygon(int object[][2], int col, int x, int y) {
+	vector<Point> points;
+	points.clear();
+	for(int i=0;i<col;i++) {
+		points.push_back(Point(object[i][0]+x,object[i][1]+y));
+	}
+	return Polygon(points);
 }

@@ -41,6 +41,8 @@ public:
 
 	void rotateCenter(double dg);
 
+	void scale(int size);
+
 	int n; //jumlah titik
 	vector<Point> e; //titik2 poligon
 	Point firePoint;

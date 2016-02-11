@@ -201,3 +201,10 @@ void Polygon::rotateCenter(double deg) {
 		i++;
 	}
 }
+
+void Polygon::scale(int size) {
+	for (int i=0;i<e.size();i++) {
+        e[i].x = e[i].x*size;
+        e[i].y = e[i].y*size;
+    }
+}
