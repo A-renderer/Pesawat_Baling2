@@ -92,29 +92,45 @@ public:
 		drawLine(P.e[P.n-1], P.e[0], r, g, b, a);
 	}
 
-	void drawCircle(Point mid, int radius, int r, int g, int b, int a) {
-		int x = radius;
+    Polygon drawCircle(Point mid, int radius, int r, int g, int b, int t) {
+	  	int x = radius;
 		int y = 0;
-		int decisionOver2 = 1 - x;   // Decision criterion divided by 2 evaluated at x=r, y=0
-		while( y <= x ) {
-			putPixel(Point(x+mid.x,y+mid.y),r,g,b,a);
-			putPixel(Point(y+mid.x,x+mid.y),r,g,b,a);
-			putPixel(Point(-x+mid.x,y+mid.y),r,g,b,a);
-			putPixel(Point(-y+mid.x,x+mid.y),r,g,b,a);
-			putPixel(Point(-x+mid.x,-y+mid.y),r,g,b,a);
-			putPixel(Point(-y+mid.x,-x+mid.y),r,g,b,a);
-			putPixel(Point(x+mid.x,-y+mid.y),r,g,b,a);
-			putPixel(Point(y+mid.x,-x+mid.y),r,g,b,a);
-    		y++;
-    		if (decisionOver2<=0) {
-    			decisionOver2 += 2 * y + 1;   // Change in decision criterion for y -> y+1
-    		}
-    		else {
-    			x--;
-    			decisionOver2 += 2 * (y - x) + 1;   // Change for y -> y+1, x -> x-1
-    		}
-    	}
-    }
+		int decisionOver2 = 1-x;
+		vector<Point> e; 
+
+		while(x >= y) {
+			putPixel(Point(x + mid.x, y + mid.y), r,g,b,t);
+			e.push_back(Point(x + mid.x, y + mid.y));
+			putPixel(Point(y + mid.x, x + mid.y), r,g,b,t); 
+			e.push_back(Point(y + mid.x, x + mid.y));
+			putPixel(Point(-x + mid.x, y + mid.y), r,g,b,t);  
+			e.push_back(Point(-x + mid.x, y + mid.y));
+			putPixel(Point(-y + mid.x, x + mid.y), r,g,b,t);  
+			e.push_back(Point(-y + mid.x, x + mid.y));
+			putPixel(Point(-x + mid.x, -y + mid.y), r,g,b,t);  
+			e.push_back(Point(-x + mid.x, -y + mid.y));
+			putPixel(Point(-y + mid.x, -x + mid.y), r,g,b,t);  
+			e.push_back(Point(-y + mid.x, -x + mid.y));
+			putPixel(Point(x + mid.x, -y + mid.y), r,g,b,t);  
+			e.push_back(Point(x + mid.x, -y + mid.y));
+			putPixel(Point(y + mid.x, -x + mid.y), r,g,b,t);  
+			e.push_back(Point(y + mid.x, -x + mid.y));
+			y++;
+			if (decisionOver2<0) {
+				decisionOver2 += 2 * y + 1;
+			}
+			else {
+				x--;
+				decisionOver2 += 2 * (y - x) + 1;
+			}
+		}
+
+		Polygon pol(e);
+		pol.firePoint = Point(mid.x, mid.y);
+		floodFill(mid.x, mid.y,0,0,0,r,g,b);
+
+		return pol;
+	}
 
 	int getB(int x, int y){
 		int blue;
