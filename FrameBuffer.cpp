@@ -222,21 +222,32 @@ public:
 		for (int y=0; y<600; y++) { //600 itu batas pixel paling bawah, masi ngasal wkwkwk
 			int k = 0;
 			// Cari titik perpotongan
-			/*for (int i=0; i<n; i++) {
+			for (int i=0; i<n; i++) {
 				if (pol.e[i].y <= y && pol.e[i+1].y > y || pol.e[i+1].y <= y && pol.e[i].y > y) {
 					line[k] = (int) (pol.e[i].x + slope[i] * (y - pol.e[i].y));
 					k++;
 				}
-			}*/
+			}
 
 			//ngurutin line
-			for (int j=0; j<k-1; j++) {
+			/*for (int j=0; j<k-1; j++) {
 				for (int i=0; i<k-1; i++) {
 					if (line[i] > line[i+1]) {
 						int temp = line[i];
 						line[i] = line[i+1];
 						line[i+1] = temp;
 					}
+				}
+			}*/
+
+			//insertion sort
+			for (int i=1; i<k-1; i++) {
+				int j=i;	
+				while (j>0 && line[j] < line[j-1]) {
+					  int temp = line[j];
+					  line[j] = line[j-1];
+					  line[j-1] = temp;
+					  j--;
 				}
 			}
 
