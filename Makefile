@@ -1,5 +1,5 @@
 all:
-	g++ -o main *.cpp -pthread -std=c++11
+	g++ -o main FrameBuffer.cpp Line.cpp Point.cpp Polygon.cpp main.cpp -pthread -std=c++11
 
 run:
 	./main
