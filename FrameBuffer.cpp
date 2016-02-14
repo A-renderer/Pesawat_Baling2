@@ -84,6 +84,23 @@ public:
 	      	if (e2 <= dx) { err += dx; P1.y += sy; } /* e_xy+e_y < 0 */
 	   	}
 	}
+	
+	void shoot(Point P1, Point P2, int r, int g, int b, int a) {
+		int dx =  abs(P2.x-P1.x), sx = P1.x<P2.x ? 1 : -1; //sign value for x
+	   	int dy = -abs(P2.y-P1.y), sy = P1.y<P2.y ? 1 : -1;  //sign value for y
+	   	int err = dx+dy; int e2; /* error value e_xy */
+	 
+	   	for(;;){  /* loop */
+	   		Point Ptemp(P1.x,P1.y);
+	    	putPixel(Ptemp,r,g,b,a);
+			usleep(0.0001);
+
+	      	if (P1.x==P2.x && P1.y==P2.y) break; //berarti titik berhimpit
+	      	e2 = 2*err;
+	      	if (e2 >= dy) { err += dy; P1.x += sx; } /* e_xy+e_x > 0 */
+	      	if (e2 <= dx) { err += dx; P1.y += sy; } /* e_xy+e_y < 0 */
+	   	}
+	}
 
 	void drawPolygon(Polygon P, int r, int g, int b, int a) {
 		for (int i=0; i<P.n-1; ++i) {
