@@ -3,8 +3,8 @@
 #include <termios.h>
 #include <fstream>
 #include <pthread.h>
-#include "assets.h"
 #include <thread>
+#include "assets.h"
 
 using namespace std;
 
@@ -13,26 +13,35 @@ vector<Point> P;
 
 void printObject(Polygon Poly);
 Polygon matrixToPolygon(int object[][2], int col);
-void *planeThread ();
+void planeThread(Polygon polyPlane, Polygon polyPropelerLeft, Polygon polyPropelerRight);
 bool isExploded();
 
+Polygon polyPlane = matrixToPolygon(plane,sizeof(plane)/sizeof(*plane));
+Polygon polyPropelerLeft = matrixToPolygon(propeler1,sizeof(propeler1)/sizeof(*propeler1));
+Polygon polyPropelerRight = matrixToPolygon(propeler2,sizeof(propeler2)/sizeof(*propeler2));
+Polygon polyParachute = matrixToPolygon(parachute,sizeof(parachute)/sizeof(*parachute));
+
 int main() {
-	thread plane(planeThread);
-	// PLAY BEGIN
-
-	// KBHIT HERE
-
-	// PLAY END
-	plane.join();
-
-	// Anggap ini sudah meledak
-	FB.clearscreen();
-	Polygon polyParachute = matrixToPolygon(parachute,sizeof(parachute)/sizeof(*parachute));
+	float size=1;
+	int iterasi=0;
+	
 	polyParachute.scale(1.2);
 	polyParachute.moveRight(300);
 	polyParachute.moveDown(100);
+	FB.clearscreen();
+
+	thread planeControl(planeThread, polyPlane, polyPropelerLeft, polyPropelerRight);
+	// PLAY START
+
+	// PLAY FINISH
+	pl
+	
+
+	// Anggap ini sudah meledak
+	FB.clearscreen();
+
 	int startX = 200, startY = 100, finishX = 500, finishY = 500;
-	int iterasi = 0; bool isRight = true;
+	iterasi = 0; bool isRight = true;
 	while(iterasi<30) {
 		FB.cleararea(startX, startY, finishX, finishY);
 		FB.rasterScan(polyParachute,255,128,114,0);
@@ -62,18 +71,9 @@ Polygon matrixToPolygon(int object[][2], int col) {
 	return Polygon(points);
 }
 
-void *planeThread () {
-	
-	FB.clearscreen();
+void planeThread(Polygon polyPlane, Polygon polyPropelerLeft, Polygon polyPropelerRight) {
 	while(!isExploded()) {
-		float size=1;
-		int iterasi=0;
-		int startX = 0; int startY = 0; int finishX = 91; int finishY = 25;
-
-		Polygon polyPlane = matrixToPolygon(plane,sizeof(plane)/sizeof(*plane));
-		Polygon polyPropelerLeft = matrixToPolygon(propeler1,sizeof(propeler1)/sizeof(*propeler1));
-		Polygon polyPropelerRight = matrixToPolygon(propeler2,sizeof(propeler2)/sizeof(*propeler2));
-		
+		int startX = 0, startY = 0,finishX = 91, finishY = 25, iterasi;
 		while(iterasi<35) {
 			FB.rasterScan(polyPlane,0,0,0,0);
 			FB.rasterScan(polyPropelerLeft,160,60,60,0);
@@ -86,10 +86,11 @@ void *planeThread () {
 			startX = startX * 1.05 + 0.5; finishX = finishX * 1.05 + 3; finishY = finishY * 1.05 + 2;
 			FB.cleararea(startX, startY, finishX, finishY);
 		}
+		FB.clearscreen();
+		polyPlane = matrixToPolygon(plane,sizeof(plane)/sizeof(*plane));
+		polyPropelerLeft = matrixToPolygon(propeler1,sizeof(propeler1)/sizeof(*propeler1));
+		polyPropelerRight = matrixToPolygon(propeler2,sizeof(propeler2)/sizeof(*propeler2));
 	}
-	FB.clearscreen();
-	
-	return NULL;
 }
 
 bool isExploded() {
